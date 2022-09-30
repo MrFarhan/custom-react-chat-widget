@@ -11,11 +11,14 @@
   padding: 50px;
 }
 
-.chakra-modal__content {
+.chakra-modal__content,
+.css-xfd71j {
   position: absolute !important;
   right: 0 !important;
   bottom: 0 !important;
-  padding-bottom: 60px !important;
+  padding: 0 !important;
+  /* padding-bottom: 60px !important; */
+  /* max-height: 595px !important; */
 }
 
 .css-1ujdiya {

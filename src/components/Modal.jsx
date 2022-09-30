@@ -47,9 +47,9 @@ export function ManualClose({ content }) {
       <Button onClick={onOpen}>Click me </Button>
 
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalContent rounded={5} mt={[0, 50]} bg="white">
+        <ModalContent rounded={5} mt={[0, 50]} bg="white" >
           <Header />
-          <ModalCloseButton />
+          <ModalCloseButton padding={'20px'}/>
           <ModalBody>
             <Flex
               h="90%"
