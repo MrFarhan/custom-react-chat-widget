@@ -1,0 +1,31 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.chat-widget-opener {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 50px;
+}
+
+.chakra-modal__content {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  padding-bottom: 60px !important;
+}
+
+.css-1ujdiya {
+  overflow: hidden !important;
+}
+
+.css-9ilu2d {
+  border-radius: 5px !important;
+}
+
+.sound-wave {
+  display: none;
+}
