@@ -8,25 +8,61 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Messages from "./Messages";
 
 export function ManualClose({ content }) {
-
+  const url = "http://localhost:4000/";
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [messages, setMessages] = useState([
-    { from: "computer", text: "Hi, My Name is HoneyChat", type: "text" },
-    { from: "me", text: "Hey there", type: "text" },
-    { from: "me", audio: "Myself Ferin Patel", type: "voice" },
     {
       from: "computer",
-      text: "Nice to meet you. You can send me message and i'll reply you with same message.",
+      text: "Hi there ! Please select from below options",
       type: "text",
+      isInitialMessage: true,
+      quickReplies: [
+        "Our Services",
+        "Estimates / Quotes",
+        "Our Company",
+        "Resources",
+        "Contact Us",
+        "Location",
+        "Service Requests",
+      ],
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
+
+  const apiCall = () => {
+    const lastMessage = messages[messages?.length - 1];
+    if (lastMessage?.isQuickReply && !lastMessage?.isInitialMessage) {
+      return axios
+        .get(url, { params: { text: lastMessage?.text } })
+        .then((result) => {
+          const text = result?.data?.data?.fulfillmentText;
+          const quickReplies = result?.data?.data.fulfillmentMessages.filter(
+            (item) => item.quickReplies
+          )?.[0]?.quickReplies?.quickReplies;
+          return setMessages((old) => [
+            ...old,
+            { from: "computer", text: text, quickReplies: quickReplies },
+          ]);
+        })
+        .catch((err) => {
+          setMessages((old) => [
+            ...old,
+            { from: "computer", text: "Sorry i am currently offline" },
+          ]);
+        });
+    }
+  };
+
+  useEffect(() => {
+    apiCall();
+  }, [messages?.length]);
 
   const handleSendMessage = () => {
     if (!inputMessage.trim().length) {
@@ -37,9 +73,24 @@ export function ManualClose({ content }) {
     setMessages((old) => [...old, { from: "me", text: data }]);
     setInputMessage("");
 
-    setTimeout(() => {
-      setMessages((old) => [...old, { from: "computer", text: data }]);
-    }, 1000);
+    axios
+      .get(url, { params: { text: data } })
+      .then((result) => {
+        const text = result?.data?.data?.fulfillmentText;
+        const quickReplies = result?.data?.data.fulfillmentMessages.filter(
+          (item) => item.quickReplies
+        )?.[0]?.quickReplies?.quickReplies;
+        setMessages((old) => [
+          ...old,
+          { from: "computer", text: text, quickReplies: quickReplies },
+        ]);
+      })
+      .catch((err) => {
+        setMessages((old) => [
+          ...old,
+          { from: "computer", text: "Sorry i am currently offline" },
+        ]);
+      });
   };
 
   return (
@@ -47,9 +98,9 @@ export function ManualClose({ content }) {
       <Button onClick={onOpen}>Click me </Button>
 
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalContent rounded={5} mt={[0, 50]} bg="white" >
+        <ModalContent rounded={5} mt={[0, 50]} bg="white">
           <Header />
-          <ModalCloseButton padding={'20px'}/>
+          <ModalCloseButton padding={"20px"} />
           <ModalBody>
             <Flex
               h="90%"
@@ -58,7 +109,12 @@ export function ManualClose({ content }) {
               overflowY={"hidden"}
               maxH={"500px"}
             >
-              <Messages messages={messages} />
+              <Messages
+                messages={messages}
+                setInputMessage={setInputMessage}
+                handleSendMessage={handleSendMessage}
+                setMessages={setMessages}
+              />
             </Flex>
           </ModalBody>
 

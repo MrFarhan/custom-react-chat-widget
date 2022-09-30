@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Input, Button, IconButton } from "@chakra-ui/react";
-import { MicIcon } from "chakra-ui-ionicons";
+import { Flex, Input, Button } from "@chakra-ui/react";
 import VoiceRecorder from "./VoiceRecorder";
+import axios from "axios";
 
 const Footer = ({
   inputMessage,
@@ -12,13 +12,41 @@ const Footer = ({
   const isInputEmpty = inputMessage.trim().length > 0;
   const [record, setRecord] = useState(false);
   const [recording, setRecording] = useState();
+  const url = "http://localhost:4000/";
+
+  const apiCall = () => {
+    if (recording?.blobURL) {
+      return axios
+        .get(url, { params: { text: recording?.blobURL } })
+        .then((result) => {
+          const text = result?.data?.data?.fulfillmentText;
+          const quickReplies = result?.data?.data.fulfillmentMessages.filter(
+            (item) => item.quickReplies
+          )?.[0]?.quickReplies?.quickReplies;
+
+          return setMessages((old) => [
+            ...old,
+            { from: "computer", text: text, quickReplies: quickReplies },
+          ]);
+        })
+        .catch((err) => {
+          setMessages((old) => [
+            ...old,
+            { from: "computer", text: "Sorry i am currently offline" },
+          ]);
+        });
+    }
+  };
 
   useEffect(() => {
-    setMessages((old) => [
-      ...old,
-      { from: "me", voice: recording, type: "voice" },
-    ]);
-  }, [recording]);
+    if (recording?.blobURL) {
+      apiCall();
+      setMessages((old) => [
+        ...old,
+        { from: "me", voice: recording, type: "voice" },
+      ]);
+    }
+  }, [recording?.blobURL]);
   return (
     <Flex w="100%" mt="5">
       <Input

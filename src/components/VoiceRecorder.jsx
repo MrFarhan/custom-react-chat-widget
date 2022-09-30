@@ -1,17 +1,14 @@
-import { Button, IconButton } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { MicIcon } from "chakra-ui-ionicons";
 import React from "react";
-import { useState } from "react";
 import { ReactMic } from "react-mic";
 const VoiceRecorder = ({ record, setRecord, setRecording }) => {
-    
   const onData = (recordedBlob) => {
-    console.log("chunk of real-time data is: ", recordedBlob);
+    // console.log("chunk of real-time data is: ", recordedBlob);
   };
 
   const onStop = (recordedBlob) => {
     setRecording(recordedBlob);
-    console.log("recordedBlob is: ", recordedBlob);
   };
   return (
     <>
