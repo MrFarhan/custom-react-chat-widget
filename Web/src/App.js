@@ -10,7 +10,6 @@ function App() {
         <div className="chat-widget-opener">
           <ManualClose context={<></>} />
         </div>
-        {/* <Chat /> */}
       </div>
     </ChakraProvider>
   );

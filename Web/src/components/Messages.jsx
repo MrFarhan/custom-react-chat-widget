@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { Badge } from "@chakra-ui/react";
+import chatbotIcon from "../assets/chaticon.png";
 
 const Messages = ({
   messages,
@@ -37,8 +38,8 @@ const Messages = ({
                 my="1"
                 p="3"
               >
-                {item.type === "voice" ? (
-                  <audio src={item?.voice?.blobURL} controls />
+                {item.type === "inputAudio" ? (
+                  <audio src={item?.inputAudio?.blobURL} controls />
                 ) : (
                   <Text>{item.text}</Text>
                 )}
@@ -47,12 +48,12 @@ const Messages = ({
           );
         } else {
           return (
-            <Flex key={index} w="100%">
-              <Avatar
+            <Flex key={index} w="100%" mt={"5px"}>
+              {/* <Avatar
                 name="Computer"
-                src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+                src={"https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"}
                 bg="blue.300"
-              ></Avatar>
+              ></Avatar> */}
               <Box>
                 <Flex
                   bg="gray.100"
@@ -61,6 +62,7 @@ const Messages = ({
                   maxW="350px"
                   my="1"
                   p="3"
+                  borderRadius={"16px"}
                 >
                   <Flex display={"block"} align={"center"}>
                     <Box>
@@ -70,11 +72,13 @@ const Messages = ({
                 </Flex>
                 {item?.quickReplies && (
                   <Box>
-                    {item?.quickReplies?.map((value) => (
+                    {item?.quickReplies?.map((value, index) => (
                       <Badge
+                        key={index}
                         cursor={"pointer"}
                         mr={2}
                         mb={2}
+                        borderRadius={"16px"}
                         background={"gray.100"}
                         padding={"8px"}
                         borderRadius={"5px"}

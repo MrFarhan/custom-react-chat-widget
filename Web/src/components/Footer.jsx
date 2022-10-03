@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Flex, Input, Button } from "@chakra-ui/react";
 import VoiceRecorder from "./VoiceRecorder";
 import axios from "axios";
+import { SendIcon } from "chakra-ui-ionicons";
 
 const Footer = ({
   inputMessage,
@@ -12,12 +13,12 @@ const Footer = ({
   const isInputEmpty = inputMessage.trim().length > 0;
   const [record, setRecord] = useState(false);
   const [recording, setRecording] = useState();
-  const url = "http://localhost:4000/";
+  const url = "http://localhost:4001/";
 
-  const apiCall = () => {
+  const apiCall = async () => {
     if (recording?.blobURL) {
       return axios
-        .get(url, { params: { text: recording?.blobURL } })
+        .post(url, { body: { inputAudio: recording } })
         .then((result) => {
           const text = result?.data?.data?.fulfillmentText;
           const quickReplies = result?.data?.data.fulfillmentMessages.filter(
@@ -43,16 +44,17 @@ const Footer = ({
       apiCall();
       setMessages((old) => [
         ...old,
-        { from: "me", voice: recording, type: "voice" },
+        { from: "me", inputAudio: recording, type: "inputAudio" },
       ]);
     }
   }, [recording?.blobURL]);
   return (
-    <Flex w="100%" mt="5">
+    <Flex w="100%" mt="5" display={"flex"} align={"center"}>
       <Input
         placeholder="Type Something..."
-        border="none"
-        borderRadius="none"
+        // border="none"
+        borderRadius="5px"
+        maxW={"335px"}
         _focus={{
           border: "1px solid black",
         }}
@@ -66,34 +68,18 @@ const Footer = ({
       />
       {isInputEmpty ? (
         <Button
-          bg="black"
-          color="white"
-          borderRadius="none"
-          _hover={{
-            bg: "white",
-            color: "black",
-            border: "1px solid black",
-          }}
+          rightIcon={<SendIcon w={8} h={8} color="black" />}
+          variant="solid"
+          background={"transparent"}
+          className="sendButton"
+          // onClick={() => setRecord((prev) => !prev)}
+          _hover={"transparent"}
           onClick={handleSendMessage}
         >
-          Send
+          {/* Send */}
         </Button>
       ) : (
         <>
-          {/* <IconButton
-          aria-label="Search database"
-          icon={<MicIcon w={8} h={8} color="blue.500" />}
-          onEndedCapture={()=>setMessages((prev) => [
-            ...prev,
-            {
-              from: "me",
-              text: "Hi, My Name is HoneyChat",
-              type: "audio",
-            },
-          ])}
-          //   onChange={(e) => setInputMessage({ type: "audio" })}
-          onClick={() => setRecord((prev) => !prev)}
-        /> */}
           <VoiceRecorder
             record={record}
             setRecord={setRecord}

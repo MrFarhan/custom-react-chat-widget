@@ -3,7 +3,7 @@ import { Flex, Avatar, AvatarBadge, Text } from "@chakra-ui/react";
 
 const Header = ({ withAvatar }) => {
   return (
-    <Flex w="100%">
+    <Flex w="100%" className="chakraHeader">
       {withAvatar ? (
         <>
           <Avatar
@@ -29,8 +29,9 @@ const Header = ({ withAvatar }) => {
           width={"100%"}
           borderRadius={"5px"}
           padding={"20px"}
+          // background={"#90cdf4"}
         >
-          <Text fontSize="lg" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold">
             Spera Electric
           </Text>
         </Flex>

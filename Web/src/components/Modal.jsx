@@ -1,9 +1,9 @@
 import {
-  Button,
+  Box,
   Flex,
+  Image,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   useDisclosure,
@@ -13,9 +13,21 @@ import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Messages from "./Messages";
+import chatbotIcon from "../assets/chaticon.png";
+import { keyframes } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 export function ManualClose({ content }) {
-  const url = "http://localhost:4000/";
+  const animationKeyframes = keyframes`
+  0% { transform: scale(1) rotate(0); border-radius: 10%; }
+  25% { transform: scale(1.2) rotate(0); border-radius: 12%; }
+  50% { transform: scale(1.2) border-radius: 20%; }
+  75% { transform: scale(1)  border-radius: 30%; }
+  100% { transform: scale(1) rotate(0); border-radius: 40%; }
+`;
+
+  const animation = `${animationKeyframes} 2s ease-in-out infinite`;
+  const url = "http://localhost:4001/";
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [messages, setMessages] = useState([
     {
@@ -40,7 +52,7 @@ export function ManualClose({ content }) {
     const lastMessage = messages[messages?.length - 1];
     if (lastMessage?.isQuickReply && !lastMessage?.isInitialMessage) {
       return axios
-        .get(url, { params: { text: lastMessage?.text } })
+        .post(url, { body: { text: lastMessage?.text } })
         .then((result) => {
           const text = result?.data?.data?.fulfillmentText;
           const quickReplies = result?.data?.data.fulfillmentMessages.filter(
@@ -74,7 +86,7 @@ export function ManualClose({ content }) {
     setInputMessage("");
 
     axios
-      .get(url, { params: { text: data } })
+      .post(url, { body: { text: data } })
       .then((result) => {
         const text = result?.data?.data?.fulfillmentText;
         const quickReplies = result?.data?.data.fulfillmentMessages.filter(
@@ -95,13 +107,21 @@ export function ManualClose({ content }) {
 
   return (
     <>
-      <Button onClick={onOpen}>Click me </Button>
+      <img 
+        src={chatbotIcon}
+        className="chatIcon"
+        onClick={onOpen}
+        alt="chat icon"
+        as={motion.div}
+        animation={animation}
+        cursor={"pointer"}  
+      />
 
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
         <ModalContent rounded={5} mt={[0, 50]} bg="white">
           <Header />
-          <ModalCloseButton padding={"20px"} />
-          <ModalBody>
+          {/* <ModalCloseButton padding={"20px"} /> */}
+          <ModalBody className="chakraBody">
             <Flex
               h="90%"
               flexDir="column"
