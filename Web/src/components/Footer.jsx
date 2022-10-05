@@ -3,6 +3,8 @@ import { Flex, Input, Button } from "@chakra-ui/react";
 import VoiceRecorder from "./VoiceRecorder";
 import axios from "axios";
 import { SendIcon } from "chakra-ui-ionicons";
+import SpeechToTextHook from "./SpeechToTextHook";
+import { URL } from "utils/constant";
 
 const Footer = ({
   inputMessage,
@@ -11,14 +13,17 @@ const Footer = ({
   setMessages,
 }) => {
   const isInputEmpty = inputMessage.trim().length > 0;
-  const [record, setRecord] = useState(false);
+  const [voiceConvertedText, setVoiceConvertedText] = useState();
   const [recording, setRecording] = useState();
-  const url = "http://localhost:4001/";
+  const url = URL;
 
   const apiCall = async () => {
-    if (recording?.blobURL) {
+    // let f = new File([recording], 'test.wav', { lastModified: new Date().getTime(), type: recording.type });
+
+    // console.log("hello audio",f)
+    if (voiceConvertedText?.length) {
       return axios
-        .post(url, { body: { inputAudio: recording } })
+        .post(url,  { text: voiceConvertedText, type: "text" } )
         .then((result) => {
           const text = result?.data?.data?.fulfillmentText;
           const quickReplies = result?.data?.data.fulfillmentMessages.filter(
@@ -40,14 +45,14 @@ const Footer = ({
   };
 
   useEffect(() => {
-    if (recording?.blobURL) {
+    if (voiceConvertedText?.length && !recording) {
       apiCall();
       setMessages((old) => [
         ...old,
-        { from: "me", inputAudio: recording, type: "inputAudio" },
+        { from: "me", text: voiceConvertedText, type: "text" },
       ]);
     }
-  }, [recording?.blobURL]);
+  }, [recording,voiceConvertedText]);
   return (
     <Flex w="100%" mt="5" display={"flex"} align={"center"}>
       <Input
@@ -80,12 +85,16 @@ const Footer = ({
         </Button>
       ) : (
         <>
-          <VoiceRecorder
+          <SpeechToTextHook
+            setRecording={setRecording}
+            setVoiceConvertedText={setVoiceConvertedText}
+          />
+          {/* <VoiceRecorder
             record={record}
             setRecord={setRecord}
             recording={recording}
             setRecording={setRecording}
-          />
+          /> */}
         </>
       )}
     </Flex>

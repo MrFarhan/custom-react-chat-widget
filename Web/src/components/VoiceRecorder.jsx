@@ -45,7 +45,7 @@ const VoiceRecorder = ({ record, setRecord, setRecording }) => {
           animation={animation}
           cursor={"pointer"}
           rightIcon={
-            <MicIcon w={8} h={8} color={record ? "#90cdf4" : "black"} />
+            <MicIcon w={8} h={8} color={record ? "#65151e" : "black"} />
           }
           _hover={"transparent"}
           variant="solid"

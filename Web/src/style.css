@@ -17,6 +17,7 @@
   right: 0 !important;
   bottom: 0 !important;
   padding: 0 !important;
+  max-width: 370px !important;
 }
 
 .css-1ujdiya {
@@ -36,7 +37,7 @@
 }
 
 .chakraHeader {
-  background-color: #90cdf4 !important;
+  background-color: #65151e !important;
   border-radius: 5px;
 }
 
@@ -45,7 +46,8 @@
 }
 
 .chatIcon {
-  max-width: 130px;
+  max-width: 56px;
+  height: 56px;
   cursor: pointer;
 }
 
@@ -73,6 +75,6 @@
   width: 100%;
 }
 
-.css-1hzyiq5{
+.css-1hzyiq5 {
   margin: 0 !important;
 }

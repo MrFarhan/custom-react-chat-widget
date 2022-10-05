@@ -25,11 +25,12 @@ const Header = ({ withAvatar }) => {
           flexDirection="column"
           mx="5"
           justify="center"
-          background={"blue.200"}
+          background={"#65151e"}
           width={"100%"}
           borderRadius={"5px"}
           padding={"20px"}
-          // background={"#90cdf4"}
+          color={'white'}
+          // background={"#65151e"}
         >
           <Text fontSize="2xl" fontWeight="bold">
             Spera Electric

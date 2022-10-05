@@ -110,7 +110,7 @@ app.post("/", async (req, res) => {
   }
   executeQueries(projectId, sessionId, queries, languageCode);
 });
-const PORT = 4001 || process.env.PORT;
+const PORT = 4000 || process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(" server running", PORT);

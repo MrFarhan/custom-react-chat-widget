@@ -16,6 +16,7 @@ import Messages from "./Messages";
 import chatbotIcon from "../assets/chaticon.png";
 import { keyframes } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { URL } from "utils/constant";
 
 export function ManualClose({ content }) {
   const animationKeyframes = keyframes`
@@ -27,7 +28,7 @@ export function ManualClose({ content }) {
 `;
 
   const animation = `${animationKeyframes} 2s ease-in-out infinite`;
-  const url = "http://localhost:4001/";
+  const url = URL;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [messages, setMessages] = useState([
     {
@@ -52,7 +53,7 @@ export function ManualClose({ content }) {
     const lastMessage = messages[messages?.length - 1];
     if (lastMessage?.isQuickReply && !lastMessage?.isInitialMessage) {
       return axios
-        .post(url, { body: { text: lastMessage?.text } })
+        .post(url, { text: lastMessage?.text })
         .then((result) => {
           const text = result?.data?.data?.fulfillmentText;
           const quickReplies = result?.data?.data.fulfillmentMessages.filter(
@@ -86,7 +87,7 @@ export function ManualClose({ content }) {
     setInputMessage("");
 
     axios
-      .post(url, { body: { text: data } })
+      .post(url, { text: data })
       .then((result) => {
         const text = result?.data?.data?.fulfillmentText;
         const quickReplies = result?.data?.data.fulfillmentMessages.filter(
@@ -107,14 +108,14 @@ export function ManualClose({ content }) {
 
   return (
     <>
-      <img 
+      <img
         src={chatbotIcon}
         className="chatIcon"
         onClick={onOpen}
         alt="chat icon"
         as={motion.div}
         animation={animation}
-        cursor={"pointer"}  
+        cursor={"pointer"}
       />
 
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
