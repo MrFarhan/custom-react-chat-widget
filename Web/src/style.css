@@ -104,3 +104,9 @@
 .css-1hzyiq5 {
   margin: 0 !important;
 }
+
+.css-sf3w23,
+.css-1owj60u {
+  max-width: 300px !important;
+  white-space: break-spaces !important;
+}

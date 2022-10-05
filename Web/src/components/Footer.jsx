@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Flex, Input, Button } from "@chakra-ui/react";
-import VoiceRecorder from "./VoiceRecorder";
 import axios from "axios";
 import { SendIcon } from "chakra-ui-ionicons";
 import SpeechToTextHook from "./SpeechToTextHook";
@@ -23,12 +22,10 @@ const Footer = ({
     // console.log("hello audio",f)
     if (voiceConvertedText?.length) {
       return axios
-        .post(url,  { text: voiceConvertedText, type: "text" } )
+        .post(url, { text: voiceConvertedText, type: "text" })
         .then((result) => {
           const text = result?.data?.data?.fulfillmentText;
-          const quickReplies = result?.data?.data.fulfillmentMessages.filter(
-            (item) => item.quickReplies
-          )?.[0]?.quickReplies?.quickReplies;
+          const quickReplies = result?.data?.data?.quickReplies;
 
           return setMessages((old) => [
             ...old,
@@ -52,7 +49,7 @@ const Footer = ({
         { from: "me", text: voiceConvertedText, type: "text" },
       ]);
     }
-  }, [recording,voiceConvertedText]);
+  }, [recording, voiceConvertedText]);
   return (
     <Flex w="100%" mt="5" display={"flex"} align={"center"}>
       <Input

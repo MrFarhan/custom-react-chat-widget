@@ -1,8 +1,6 @@
 import {
-  Avatar,
   Box,
   Flex,
-  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -15,13 +13,12 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Messages from "./Messages";
 import chatbotIcon from "../assets/chaticon.png";
-import cross from "../assets/cross.png";
 import { keyframes } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { URL } from "utils/constant";
 import { CloseIcon } from "chakra-ui-ionicons";
 
-export function ManualClose({ content }) {
+export function ManualClose() {
   const animationKeyframes = keyframes`
   0% { transform: scale(1) rotate(0); border-radius: 10%; }
   25% { transform: scale(1.2) rotate(0); border-radius: 12%; }
@@ -59,9 +56,7 @@ export function ManualClose({ content }) {
         .post(url, { text: lastMessage?.text })
         .then((result) => {
           const text = result?.data?.data?.fulfillmentText;
-          const quickReplies = result?.data?.data.fulfillmentMessages.filter(
-            (item) => item.quickReplies
-          )?.[0]?.quickReplies?.quickReplies;
+          const quickReplies = result?.data?.data?.quickReplies;
           return setMessages((old) => [
             ...old,
             { from: "computer", text: text, quickReplies: quickReplies },
@@ -93,9 +88,7 @@ export function ManualClose({ content }) {
       .post(url, { text: data })
       .then((result) => {
         const text = result?.data?.data?.fulfillmentText;
-        const quickReplies = result?.data?.data.fulfillmentMessages.filter(
-          (item) => item.quickReplies
-        )?.[0]?.quickReplies?.quickReplies;
+        const quickReplies = result?.data?.data?.quickReplies;
         setMessages((old) => [
           ...old,
           { from: "computer", text: text, quickReplies: quickReplies },
@@ -128,14 +121,14 @@ export function ManualClose({ content }) {
           borderRadius={"36px"}
           padding={"5px"}
           cursor={"pointer"}
-          color={'white'}
+          color={"white"}
           zIndex={2}
         >
           <CloseIcon fontSize={"50px"} />
         </Box>
       )}
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} >
+      <Modal blockScrollOnMount={false} isOpen={isOpen}>
         <ModalContent rounded={5} mt={[0, 50]} bg="white">
           <Header />
           {/* <ModalCloseButton padding={"20px"} /> */}
