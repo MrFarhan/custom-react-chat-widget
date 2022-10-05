@@ -30,9 +30,17 @@ const Header = ({ withAvatar }) => {
           borderRadius={"5px"}
           padding={"20px"}
           color={'white'}
+          maxH={'50px'}
+          padding={'15px'}
+          margin={0}
+          // max-height: 50px;
+          // align-items: flex-start;
+          // padding: 0;
+          // margin: 0;
+          // padding: 15px;
           // background={"#65151e"}
         >
-          <Text fontSize="2xl" fontWeight="bold">
+          <Text fontSize="xl" fontWeight="bold">
             Spera Electric
           </Text>
         </Flex>

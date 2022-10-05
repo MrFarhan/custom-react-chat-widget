@@ -1,4 +1,4 @@
-.app {
+/* .app {
   width: 100vw;
   height: 100vh;
   position: relative;
@@ -9,6 +9,20 @@
   right: 0;
   bottom: 0;
   padding: 50px;
+} */
+
+.chat-widget-opener {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 15px;
+  z-index: 2;
+}
+
+.chakra-modal__content-container,
+.css-g33wz1,
+.css-g33wz1 {
+  z-index: 1 !important;
 }
 
 .chakra-modal__content,
@@ -18,6 +32,9 @@
   bottom: 0 !important;
   padding: 0 !important;
   max-width: 370px !important;
+  margin-bottom: 90px !important;
+  margin-right: 30px !important;
+  z-index: 1 !important;
 }
 
 .css-1ujdiya {
@@ -49,6 +66,15 @@
   max-width: 56px;
   height: 56px;
   cursor: pointer;
+  /* background: #65151e;
+  color: white;
+  border-radius: 51px; */
+}
+
+.activeChatIcon {
+  max-width: 28px;
+  height: 28px;
+  cursor: pointer;
 }
 
 .fadeOut {
@@ -65,7 +91,7 @@
 }
 
 .chatOpen {
-  margin-bottom: 160px !important;
+  margin-bottom: 90px !important;
 }
 
 .css-1x6yq3l {

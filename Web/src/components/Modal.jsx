@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Flex,
   Image,
@@ -14,9 +15,11 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Messages from "./Messages";
 import chatbotIcon from "../assets/chaticon.png";
+import cross from "../assets/cross.png";
 import { keyframes } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { URL } from "utils/constant";
+import { CloseIcon } from "chakra-ui-ionicons";
 
 export function ManualClose({ content }) {
   const animationKeyframes = keyframes`
@@ -108,17 +111,31 @@ export function ManualClose({ content }) {
 
   return (
     <>
-      <img
-        src={chatbotIcon}
-        className="chatIcon"
-        onClick={onOpen}
-        alt="chat icon"
-        as={motion.div}
-        animation={animation}
-        cursor={"pointer"}
-      />
+      {!isOpen ? (
+        <img
+          src={chatbotIcon}
+          className={"chatIcon"}
+          onClick={onOpen}
+          alt="chat icon"
+          as={motion.div}
+          animation={animation}
+          cursor={"pointer"}
+        />
+      ) : (
+        <Box
+          onClick={!isOpen ? onOpen : onClose}
+          background={"#65151e"}
+          borderRadius={"36px"}
+          padding={"5px"}
+          cursor={"pointer"}
+          color={'white'}
+          zIndex={2}
+        >
+          <CloseIcon fontSize={"50px"} />
+        </Box>
+      )}
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} >
         <ModalContent rounded={5} mt={[0, 50]} bg="white">
           <Header />
           {/* <ModalCloseButton padding={"20px"} /> */}

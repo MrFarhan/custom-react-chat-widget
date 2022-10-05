@@ -25,13 +25,14 @@ const Messages = ({
   };
 
   return (
-    <Flex w="100%" h="80%" overflowY="scroll" flexDirection="column" p="3">
+    <Flex w="100%" h={'360px'} overflowY="scroll" flexDirection="column" p="3">
       {messages.map((item, index) => {
         if (item.from === "me") {
           return (
             <Flex key={index} w="100%" justify="flex-end">
               <Flex
-                bg="black"
+                bg="#65151e"
+                borderRadius={'5px'}
                 color="white"
                 minW="100px"
                 maxW="350px"
@@ -57,7 +58,7 @@ const Messages = ({
               <Box>
                 <Flex
                   bg="gray.100"
-                  color="black"
+                  // color="#65151e"
                   minW="100px"
                   maxW="350px"
                   my="1"
