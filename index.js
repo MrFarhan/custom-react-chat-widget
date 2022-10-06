@@ -1,8 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express().use(express.json());
-const util = require("util");
-const fs = require("fs");
+const { struct } = require("pb-util");
 app.use(cors());
 /**
  * TODO(developer): UPDATE these variables before running the sample.
@@ -18,23 +17,16 @@ const languageCode = "en";
 
 // Imports the Dialogflow library
 const dialogflow = require("@google-cloud/dialogflow");
-// The encoding of the audio file, e.g. 'AUDIO_ENCODING_LINEAR_16'
-const encoding = "AUDIO_ENCODING_LINEAR_16";
-
-// The sample rate of the audio file in hertz, e.g. 16000
-const sampleRateHertz = 48000;
 
 // Instantiates a session client
 const sessionClient = new dialogflow.SessionsClient({
   keyFilename: "./service_key.json", // path to your service account key file here
 });
-app.post("/", async (req, res) => {
-  // const readFile = util.promisify(fs.readFile);
-  // const inputAudio1 = await readFile("./recordingsHi.wav");
 
-  // console.log("input audio : ", inputAudio1);
-  let { text, inputAudio } = req.body;
-  const queries = [text];
+app.post("/", async (req, res) => {
+  let { text } = req.body;
+  let context;
+  let intentResponse;
   async function detectIntent(
     projectId,
     sessionId,
@@ -47,30 +39,17 @@ app.post("/", async (req, res) => {
       projectId,
       sessionId
     );
-    console.log("inputAudio1", req.body.body.text);
+
     // The text query request.
     const request = {
       session: sessionPath,
       queryInput: {
         text: {
-          // The query to send to the dialogflow agent
-          text: req.body.body.text,
-          // The language used by the client (en-US)
-          languageCode: "en-US",
+          text: query,
+          languageCode: languageCode,
         },
       },
     };
-    // const request = {
-    //   session: sessionPath,
-    //   queryInput: {
-    //     audioConfig: {
-    //       audioEncoding: encoding,
-    //       sampleRateHertz: sampleRateHertz,
-    //       languageCode: languageCode,
-    //     },
-    //   },
-    //   inputAudio: "blob:http://localhost:3000/f165463b-d231-4a5a-9d0d-ff528a8af77f",
-    // };
 
     if (contexts && contexts.length > 0) {
       request.queryParams = {
@@ -82,36 +61,43 @@ app.post("/", async (req, res) => {
     return responses[0];
   }
 
-  async function executeQueries(projectId, sessionId, queries, languageCode) {
-    // Keeping the context across queries let's us simulate an ongoing conversation with the bot
-    let context;
-    let intentResponse;
-    for (const query of queries) {
-      try {
-        console.log(`Sending Query: ${query}`);
-        intentResponse = await detectIntent(
-          projectId,
-          sessionId,
-          query,
-          context,
-          languageCode
-        );
-        console.log("Detected intent");
-        console.log(
-          `Fulfillment Text: ${intentResponse.queryResult.fulfillmentText}`
-        );
-        res.json({ data: intentResponse.queryResult });
-        // Use the context from this response for next queries
-        context = intentResponse.queryResult.outputContexts;
-      } catch (error) {
-        res.json({ error: error.message });
-      }
-    }
+  try {
+    let intentResponse = await detectIntent(
+      projectId,
+      sessionId,
+      text,
+      context,
+      languageCode
+    );
+    console.log("Detected intent");
+    let fulfillmentMessages = intentResponse.queryResult.fulfillmentMessages;
+    let nestedQR = struct.decode(
+      fulfillmentMessages.find(
+        (item) => item.platform === "PLATFORM_UNSPECIFIED" && !!item.payload
+      ).payload
+    ).richContent[0];
+    let nestedQR1 = nestedQR.find(
+      (item) => item.type === "chips" && item.options.length > 0
+    ).options;
+    let quickReplies = nestedQR1.map((value) => value.text);
+
+    intentResponse.queryResult["quickReplies"] = quickReplies;
+
+    console.log(JSON.stringify("Fulfillment Text: ", fulfillmentMessages));
+    console.log(
+      `Fulfillment Text: ${JSON.stringify(
+        intentResponse.queryResult.fulfillmentText
+      )}`
+    );
+    res.json({ data: intentResponse.queryResult });
+    // Use the context from this response for next queries
+    context = intentResponse.queryResult.outputContexts;
+  } catch (error) {
+    res.json({ error: error.message });
   }
-  executeQueries(projectId, sessionId, queries, languageCode);
 });
-const PORT = 4000 || process.env.PORT;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
-  console.log(" server running", PORT);
+  console.log(" server running on port: ", PORT);
 });

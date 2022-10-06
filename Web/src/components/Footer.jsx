@@ -29,7 +29,13 @@ const Footer = ({
 
           return setMessages((old) => [
             ...old,
-            { from: "computer", text: text, quickReplies: quickReplies },
+            {
+              from: "computer",
+              text:
+                text ||
+                "Sorry i am facing a technical glitch, please checkout our website for more details about our services",
+              quickReplies: quickReplies,
+            },
           ]);
         })
         .catch((err) => {
