@@ -3,6 +3,7 @@ import {
   Flex,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   useDisclosure,
@@ -133,7 +134,7 @@ export function ManualClose() {
       <Modal blockScrollOnMount={false} isOpen={isOpen}>
         <ModalContent rounded={5} mt={[0, 50]} bg="white">
           <Header />
-          {/* <ModalCloseButton padding={"20px"} /> */}
+          <ModalCloseButton padding={"20px"} color={"white"} onClick={onClose} className="modal-close"/>
           <ModalBody className="chakraBody">
             <Flex
               h="90%"
