@@ -44,7 +44,6 @@ export default function SpeechToTextHook({
   const animation = isRecording
     ? `${animationKeyframes} 2s ease-in-out infinite`
     : "";
-  console.log("result is", results[results?.length - 1]?.transcript);
 
   const ClickHandler = () => {
     if (isRecording) {

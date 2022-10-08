@@ -25,14 +25,14 @@ const Messages = ({
   };
 
   return (
-    <Flex w="100%" h={'360px'} overflowY="scroll" flexDirection="column" p="3">
+    <Flex w="100%" h={"360px"} overflowY="scroll" flexDirection="column" p="3">
       {messages.map((item, index) => {
         if (item.from === "me") {
           return (
             <Flex key={index} w="100%" justify="flex-end">
               <Flex
                 bg="#65151e"
-                borderRadius={'5px'}
+                borderRadius={"5px"}
                 color="white"
                 minW="100px"
                 maxW="350px"

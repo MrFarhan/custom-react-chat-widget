@@ -33,12 +33,6 @@ const Header = ({ withAvatar }) => {
           maxH={'50px'}
           padding={'15px'}
           margin={0}
-          // max-height: 50px;
-          // align-items: flex-start;
-          // padding: 0;
-          // margin: 0;
-          // padding: 15px;
-          // background={"#65151e"}
         >
           <Text fontSize="xl" fontWeight="bold">
             Spera Electric

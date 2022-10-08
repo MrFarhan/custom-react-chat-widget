@@ -24,16 +24,18 @@ const Footer = ({
           const text = result?.data?.data?.fulfillmentText;
           const quickReplies = result?.data?.data?.quickReplies;
 
-          return setMessages((old) => [
-            ...old,
-            {
-              from: "computer",
-              text:
-                text ||
-                "Sorry i am facing a technical glitch, please checkout our website for more details about our services",
-              quickReplies: quickReplies,
-            },
-          ]);
+          text?.map((item) =>
+            setMessages((old) => [
+              ...old,
+              {
+                from: "computer",
+                text:
+                  item ||
+                  "Sorry i am facing a technical glitch, please checkout our website for more details about our services",
+                quickReplies: quickReplies,
+              },
+            ])
+          );
         })
         .catch((err) => {
           setMessages((old) => [
