@@ -17,9 +17,6 @@ const Footer = ({
   const url = URL;
 
   const apiCall = async () => {
-    // let f = new File([recording], 'test.wav', { lastModified: new Date().getTime(), type: recording.type });
-
-    // console.log("hello audio",f)
     if (voiceConvertedText?.length) {
       return axios
         .post(url, { text: voiceConvertedText, type: "text" })
@@ -60,7 +57,6 @@ const Footer = ({
     <Flex w="100%" mt="5" display={"flex"} align={"center"}>
       <Input
         placeholder="Type Something..."
-        // border="none"
         borderRadius="5px"
         maxW={"335px"}
         _focus={{
@@ -80,7 +76,6 @@ const Footer = ({
           variant="solid"
           background={"transparent"}
           className="sendButton"
-          // onClick={() => setRecord((prev) => !prev)}
           _hover={"transparent"}
           onClick={handleSendMessage}
         >
@@ -92,12 +87,6 @@ const Footer = ({
             setRecording={setRecording}
             setVoiceConvertedText={setVoiceConvertedText}
           />
-          {/* <VoiceRecorder
-            record={record}
-            setRecord={setRecord}
-            recording={recording}
-            setRecording={setRecording}
-          /> */}
         </>
       )}
     </Flex>

@@ -10,44 +10,18 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Footer from "./Footer";
-import Header from "./Header";
-import Messages from "./Messages";
 import chatbotIcon from "../assets/chaticon.png";
-import { keyframes } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { URL } from "utils/constant";
+import { customAnimation, initialMessage, URL } from "utils/constant";
 import { CloseIcon } from "chakra-ui-ionicons";
+import Header from "components/Header";
+import Messages from "components/Messages";
+import Footer from "components/Footer";
 
-export function ManualClose() {
-  const animationKeyframes = keyframes`
-  0% { transform: scale(1) rotate(0); border-radius: 10%; }
-  25% { transform: scale(1.2) rotate(0); border-radius: 12%; }
-  50% { transform: scale(1.2) border-radius: 20%; }
-  75% { transform: scale(1)  border-radius: 30%; }
-  100% { transform: scale(1) rotate(0); border-radius: 40%; }
-`;
-
-  const animation = `${animationKeyframes} 2s ease-in-out infinite`;
+export function Chatbot() {
   const url = URL;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [messages, setMessages] = useState([
-    {
-      from: "computer",
-      text: "Hi there ! Please select from below options",
-      type: "text",
-      isInitialMessage: true,
-      quickReplies: [
-        "Our Services",
-        "Estimates / Quotes",
-        "Our Company",
-        "Resources",
-        "Contact Us",
-        "Location",
-        "Service Requests",
-      ],
-    },
-  ]);
+  const [messages, setMessages] = useState([initialMessage]);
   const [inputMessage, setInputMessage] = useState("");
 
   const apiCall = () => {
@@ -60,8 +34,13 @@ export function ManualClose() {
           const quickReplies = result?.data?.data?.quickReplies;
           return setMessages((old) => [
             ...old,
-            { from: "computer", text: text ||
-            "Sorry i am facing a technical glitch, please checkout our website for more details about our services", quickReplies: quickReplies },
+            {
+              from: "computer",
+              text:
+                text ||
+                "Sorry i am facing a technical glitch, please checkout our website for more details about our services",
+              quickReplies: quickReplies,
+            },
           ]);
         })
         .catch((err) => {
@@ -93,8 +72,13 @@ export function ManualClose() {
         const quickReplies = result?.data?.data?.quickReplies;
         setMessages((old) => [
           ...old,
-          { from: "computer", text: text ||
-          "Sorry i am facing a technical glitch, please checkout our website for more details about our services", quickReplies: quickReplies },
+          {
+            from: "computer",
+            text:
+              text ||
+              "Sorry i am facing a technical glitch, please checkout our website for more details about our services",
+            quickReplies: quickReplies,
+          },
         ]);
       })
       .catch((err) => {
@@ -114,7 +98,7 @@ export function ManualClose() {
           onClick={onOpen}
           alt="chat icon"
           as={motion.div}
-          animation={animation}
+          animation={customAnimation}
           cursor={"pointer"}
         />
       ) : (
@@ -134,7 +118,12 @@ export function ManualClose() {
       <Modal blockScrollOnMount={false} isOpen={isOpen}>
         <ModalContent rounded={5} mt={[0, 50]} bg="white">
           <Header />
-          <ModalCloseButton padding={"20px"} color={"white"} onClick={onClose} className="modal-close"/>
+          <ModalCloseButton
+            padding={"20px"}
+            color={"white"}
+            onClick={onClose}
+            className="modal-close"
+          />
           <ModalBody className="chakraBody">
             <Flex
               h="90%"
