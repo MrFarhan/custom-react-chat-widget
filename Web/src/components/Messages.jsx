@@ -1,14 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { Badge } from "@chakra-ui/react";
-import chatbotIcon from "../assets/chaticon.png";
 
-const Messages = ({
-  messages,
-  setMessages,
-  setInputMessage,
-  handleSendMessage,
-}) => {
+const Messages = ({ messages, setMessages }) => {
+  // always scroll to bottom
   const AlwaysScrollToBottom = () => {
     const elementRef = useRef();
     useEffect(() => elementRef.current.scrollIntoView());
@@ -20,8 +15,6 @@ const Messages = ({
       ...old,
       { from: "me", text: value, isQuickReply: true },
     ]);
-    // setInputMessage(value);
-    // handleSendMessage();
   };
 
   return (
@@ -39,9 +32,11 @@ const Messages = ({
                 my="1"
                 p="3"
               >
+                {/* {Audio is added in case of future feature of audio player} */}
                 {item.type === "inputAudio" ? (
                   <audio src={item?.inputAudio?.blobURL} controls />
                 ) : (
+                  // {Text messages from opposit user}
                   <Text>{item.text}</Text>
                 )}
               </Flex>
@@ -67,10 +62,12 @@ const Messages = ({
                 >
                   <Flex display={"block"} align={"center"}>
                     <Box>
+                      {/*  {Text messages from Computer / chatbot} */}
                       <Text>{item.text}</Text>
                     </Box>
                   </Flex>
                 </Flex>
+                {/* {Chatbot Quick replies} */}
                 {item?.quickReplies && (
                   <Box>
                     {item?.quickReplies?.map((value, index) => (
@@ -79,7 +76,6 @@ const Messages = ({
                         cursor={"pointer"}
                         mr={2}
                         mb={2}
-                        borderRadius={"16px"}
                         background={"gray.100"}
                         padding={"8px"}
                         borderRadius={"5px"}

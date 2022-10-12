@@ -54,9 +54,11 @@ const Footer = ({
         { from: "me", text: voiceConvertedText, type: "text" },
       ]);
     }
-  }, [recording, voiceConvertedText]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recording, voiceConvertedText]); // Send messages when ever new voice message comes in
   return (
     <Flex w="100%" mt="5" display={"flex"} align={"center"}>
+      {/* {Chatbot Input bar} */}
       <Input
         placeholder="Type Something..."
         borderRadius="5px"
@@ -81,10 +83,12 @@ const Footer = ({
           _hover={"transparent"}
           onClick={handleSendMessage}
         >
+          {/* {Chatbot send  button} */}
           {/* Send */}
         </Button>
       ) : (
         <>
+          {/* {Chatbot mic button and handles voice to text conversion} */}
           <SpeechToTextHook
             setRecording={setRecording}
             setVoiceConvertedText={setVoiceConvertedText}

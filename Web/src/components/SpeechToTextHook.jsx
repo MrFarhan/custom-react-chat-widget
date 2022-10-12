@@ -10,17 +10,11 @@ export default function SpeechToTextHook({
   setRecording,
   setVoiceConvertedText,
 }) {
-  const {
-    error,
-    interimResult,
-    isRecording,
-    results,
-    startSpeechToText,
-    stopSpeechToText,
-  } = useSpeechToText({
-    continuous: true,
-    useLegacyResults: false,
-  });
+  const { error, isRecording, results, startSpeechToText, stopSpeechToText } =
+    useSpeechToText({
+      continuous: true,
+      useLegacyResults: false,
+    }); // isRecording indicates the recording state, and result returns the voice converted to text object
 
   useEffect(() => {
     if (results[results?.length - 1]?.transcript?.length) {
@@ -30,10 +24,12 @@ export default function SpeechToTextHook({
       setRecording(false);
       setVoiceConvertedText(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRecording]);
 
   if (error) return <p>Web Speech API is not available in this browser 🤷‍</p>;
 
+  // animation for mic button
   const animationKeyframes = keyframes`
     0% { transform: scale(1) rotate(0); border-radius: 10%; }
     25% { transform: scale(1.2) rotate(0); border-radius: 12%; }
@@ -45,6 +41,7 @@ export default function SpeechToTextHook({
     ? `${animationKeyframes} 2s ease-in-out infinite`
     : "";
 
+  // record button overall state handler and send message
   const ClickHandler = () => {
     if (isRecording) {
       stopSpeechToText();
@@ -62,9 +59,6 @@ export default function SpeechToTextHook({
 
   return (
     <div>
-      {/* <button onClick={isRecording ? stopSpeechToText : startSpeechToText}>
-        {isRecording ? "Stop Recording" : "Start Recording"}
-      </button> */}
       <Button
         as={motion.div}
         animation={animation}

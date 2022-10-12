@@ -5,10 +5,11 @@ import "./style.css";
 
 function App() {
   return (
+    // Chakra Provider for chakra ui theme usage
     <ChakraProvider theme={theme}>
       <div className="app">
         <div className="chat-widget-opener">
-          <Chatbot context={<></>} />
+          <Chatbot context={<></>} /> {/* { main chatbot component} */}
         </div>
       </div>
     </ChakraProvider>
