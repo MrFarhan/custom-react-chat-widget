@@ -97,6 +97,13 @@ export function Chatbot() {
       });
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      onOpen((prev) => !prev);
+    }, 5000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       {/* {chat widget handler to open and close chat} */}

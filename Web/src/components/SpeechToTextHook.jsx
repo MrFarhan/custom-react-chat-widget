@@ -43,6 +43,17 @@ export default function SpeechToTextHook({
 
   // record button overall state handler and send message
   const ClickHandler = () => {
+    window.navigator.mediaDevices
+      .getUserMedia({ video: false, audio: true })
+      .then((stream) => {
+        window.localStream = stream; // A
+        window.localAudio.srcObject = stream; // B
+        window.localAudio.autoplay = true; // C
+      })
+      .catch((err) => {
+        console.error(`you got an error: ${err}`);
+      });
+
     if (isRecording) {
       stopSpeechToText();
       setVoiceConvertedText(undefined);
